@@ -1,11 +1,119 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LMA Lanches</title>
+    <meta charset="UTF-8">
+    <title>LMA Burguer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <link rel="shortcut icon" href="Imagens/images.png" type="image/x-icon">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Asset&family=Bebas+Neue&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap');
+    </style>
 </head>
 <body>
-  
+
+    <header>
+        <img src="Imagens/logo.jpg" alt="Logo LMA Burguer" class="logo">
+
+        <h1 class="title">LMA Burguer</h1>
+        <p>Os melhores hambúrgueres da cidade 🍔</p>
+
+        <nav>
+            <ul>
+                <li><a href="#" id="btn-home">Início</a></li>
+                <li><a href="#" id="btn-menu">Cardápio</a></li>
+                <li><a href="#" id="btn-sobre">Sobre</a></li>
+                <li><a href="#" id="btn-contato">Contato</a></li>
+                <li>
+                    <a href="#" id="btn-carrinho" class="carrinho-link">
+                        <img src="Imagens/download.jpg" alt="carrinho">
+                    </a>  
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section id="home">
+            <h2>Início</h2>
+            <p>Bem-vindo ao LMA Burguer! Aqui você encontra os melhores hambúrgueres da cidade!</p>
+        </section>
+
+        <section id="menu">
+            <h2>Cardápio</h2>
+
+            <h3>🍔 Hambúrgueres</h3>
+            <ul>
+                <li onclick="adicionarCarrinho('Clássico do Chefe', 28)">Clássico do Chefe - R$ 28,00</li>
+                <li onclick="adicionarCarrinho('Cheddar & Bacon', 18)">Cheddar & Bacon - R$ 18,00</li>
+                <li onclick="adicionarCarrinho('Duplo Smash', 20)">Duplo Smash - R$ 20,00</li>
+                <li onclick="adicionarCarrinho('Frango Supreme', 30)">Frango Supreme - R$ 30,00</li>
+                <li onclick="adicionarCarrinho('Egg Bacon', 31)">Egg Bacon - R$ 31,00</li>
+                <li onclick="adicionarCarrinho('Picanha Prime', 38)">Picanha Prime - R$ 38,00</li>
+            </ul>
+
+            <h3>🥤 Bebidas</h3>
+            <ul>
+                <li onclick="adicionarCarrinho('Refrigerante Lata', 7)">Refrigerante Lata - R$ 7,00</li>
+                <li onclick="adicionarCarrinho('Suco Natural 500ml', 12)">Suco Natural 500ml - R$ 12,00</li>
+                <li onclick="adicionarCarrinho('Chá Gelado 500ml', 10)">Chá Gelado 500ml - R$ 10,00</li>
+                <li onclick="adicionarCarrinho('Capuccino Gelado', 13)">Capuccino Gelado - R$ 13,00</li>
+                <li onclick="adicionarCarrinho('Milk Shake 300ml', 18)">Milk Shake 300ml - R$ 18,00</li>
+                <li onclick="adicionarCarrinho('Água Mineral', 4)">Água Mineral - R$ 4,00</li>
+            </ul>
+
+            <h3>🍟 Acompanhamentos</h3>
+            <ul>
+                <li onclick="adicionarCarrinho('Batata Frita', 15)">Batata Frita - R$ 15,00</li>
+                <li onclick="adicionarCarrinho('Onion Rings', 16)">Onion Rings - R$ 16,00</li>
+                <li onclick="adicionarCarrinho('Mandioca Frita', 14)">Mandioca Frita - R$ 14,00</li>
+                <li onclick="adicionarCarrinho('Mini Nuggets', 16)">Mini Nuggets - R$ 16,00</li>
+                <li onclick="adicionarCarrinho('Mini Churros', 15)">Mini Churros - R$ 15,00</li>
+            </ul>
+        </section>
+
+        <section id="sobre" style="display:none;">
+            <h2>Sobre Nós</h2>
+            <p>Hamburgueria artesanal com ingredientes frescos e de alta qualidade.</p>
+        </section>
+
+        <section id="contato" style="display:none;">
+            <h2>Contato</h2>
+            <p>Email: lmaburguer@gmail.com</p>
+        </section>
+
+        <section id="carrinho" style="display:none;">
+          <h2>🛒 Carrinho</h2>
+          <ul id="lista-carrinho"></ul>
+      
+          <p id="subtotal">Subtotal: R$ 0,00</p>
+          <p id="taxa-entrega">Taxa de entrega: R$ 0,00</p>
+          <p id="total">Total: R$ 0,00</p>
+      
+          <button id="btn-pagamento">Ir para pagamento</button>
+      </section>
+      
+      <section id="pagamento" style="display:none;">
+          <h2>💳 Pagamento</h2>
+          <p id="resumo-pagamento">Seu pedido aparecerá aqui.</p>
+      
+          <h3>Forma de pagamento</h3>
+          <ul>
+              <li>Pix</li>
+              <li>Cartão de Crédito</li>
+              <li>Cartão de Débito</li>
+              <li>Dinheiro</li>
+          </ul>
+      </section>
+
+    </main>
+
+    <footer>
+        <p>Feito por Miguel, Luiz, Manuela, Anna Clara, Analice</p>
+    </footer>
+
 </body>
 </html>
