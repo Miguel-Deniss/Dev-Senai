@@ -1,3 +1,10 @@
+<!--
+No HTML eu organizei a estrutura do jogo
+Coloquei a area principal, o jogador, a moeda, os obstaculos, as caixas laterais(Cronometro, vida e pontos), e os audios
+Tambem adicionei as partes que mostram mensagens na tela durante o jogo
+-->
+
+
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -10,25 +17,58 @@
   <body>
     <h1>🎮 Coletor de Moedas</h1>
 
+    <!-- Caixa do cronometro -->
+    <!-- Tive um pouco de dificudade pois nao estava funcionando do jeito que eu queria no começo-->
+    <div id="caixaCronometro">
+      <img src="Imagens/cronometro.png" alt="Cronômetro" id="imgCronometro">
+      <div class="infoBox">
+        <span id="tempo">30</span>
+      </div>
+    </div>
+    
+    <!-- Caixa para os pontos -->
+    <div id="caixaPontos">
+      <img src="Imagens/moeda.png" alt="Pontos" id="imgPontos">
+      <div class="infoBox">
+        <span id="pontuacao">0</span>
+      </div>
+    </div>
+    
+    <!-- Caixa para as vidas -->
+    <div id="caixaVida">
+      <img src="Imagens/coracao2.png" alt="Vida" id="imgVida">
+      <div class="infoBox">
+        <span id="valorVida">5</span>
+      </div>
+    </div>
+
     <div id="areaJogo">
       <div id="jogador"><img src="Imagens/imã.png" alt="jogador"></div>
       <div class="moeda" id="moeda"><img src="Imagens/moeda.png" alt="moeda"></div>
+      <div id="mensagemColisao"></div>
+      <div id="mensagemCentral"></div>
+
+      <div id="painelTempo">
+      Tempo: <span id="tempo">30</span>
+      </div>
+
+<audio id="somMoeda" src="sons/moeda.mp3"></audio>
+<audio id="somDano" src="sons/dano.mp3"></audio>
 
       <!-- Obstáculos -->
       <div class="obstaculo" id="obstaculo1"><img src="Imagens/espinho.jpg" alt="espinho"></div>
       <div class="obstaculo" id="obstaculo2"><img src="Imagens/espinho.jpg" alt="espinho"></div>
       <div class="obstaculo" id="obstaculo3"><img src="Imagens/espinho.jpg" alt="espinho"></div>
+      <div class="obstaculo" id="obstaculo4"><img src="Imagens/espinho.jpg" alt="barreira"></div>
+      <div class="obstaculo" id="obstaculo5"><img src="Imagens/espinho.jpg" alt="barreira"></div>
+      <!-- Aparecer a mensagem de vitoria e derrota na tela -->
+      <div id="mensagemCentral"></div>
     </div>
 
-    <div id="painel">
-      Pontuação:
-      <span id="pontuacao">0</span>
-    </div>
-
-    <div id="painelVida">
-      ❤️:
-      <span id="valorVida">5</span>
-    </div>
+    <!-- Audio -->
+    <!-- Tive dificuldade com essa parte de som, nunca usei, e nao consegui fazer funcionar -->
+    <audio id="somMoeda" src="sons/Moeda 2.mp3"></audio>
+    <audio id="somDano" src="sons/Dor 3.mp3"></audio>
 
     <script src="script.js"></script>
   </body>
