@@ -1,208 +1,166 @@
-// pega os elementos do html
+const player = document.getElementById("player");
 const jogo = document.getElementById("jogo");
-const jogador = document.getElementById("jogador");
-const pontosTexto = document.getElementById("pontos");
-const vidasTexto = document.getElementById("vidas");
-const nivelTexto = document.getElementById("nivel");
-const mensagem = document.getElementById("mensagem");
+const pontosEl = document.getElementById("pontos");
+const vidasEl = document.getElementById("vidas");
+const nivelEl = document.getElementById("nivel");
 
-// variáveis do jogo
 let pontos = 0;
 let vidas = 3;
-let nivel = 1;
-let jogoAtivo = true;
+let playerX = 365;
+let jogoRodando = false;
 
-// posição do jogador
-let jogadorX = 20;
-let jogadorY = 220;
-let velocidade = 20;
+let velocidade = 5;
+let intervaloSpawn = 1500;
 
-// palavras por nível
-const fases = {
-  1: {
-    corretas: ["A", "E", "I", "O", "U"],
-    erradas: ["1", "7", "%", "#", "@"]
-  },
-  2: {
-    corretas: ["BA", "CA", "LA", "BO", "TO"],
-    erradas: ["9X", "!!", "3@", "&&", "??"]
-  },
-  3: {
-    corretas: ["CASA", "BOLA", "GATO", "FLOR", "LIVRO"],
-    erradas: ["XZPT", "BRTU", "PLQW", "ZZKK", "TRXP"]
-  }
-};
+// ✋ MÃO
+player.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png">`;
 
-// array que guarda as palavras criadas
-let palavrasNaTela = [];
+// 🎵 música
+const musica = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_115b9bce01.mp3");
+musica.loop = true;
+musica.volume = 0.3;
 
-// atualiza a posição do jogador
-function atualizarJogador() {
-  jogador.style.left = jogadorX + "px";
-  jogador.style.top = jogadorY + "px";
-}
+// 🔊 som coleta
+const somColeta = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_44f1c3b1b3.mp3");
 
-// atualiza o painel
-function atualizarPainel() {
-  pontosTexto.textContent = pontos;
-  vidasTexto.textContent = vidas;
-  nivelTexto.textContent = nivel;
-}
+// 🧠 base
+const base = [
+  { nome: "gato", img: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+  { nome: "cachorro", img: "https://cdn-icons-png.flaticon.com/512/616/616430.png" },
+  { nome: "casa", img: "https://cdn-icons-png.flaticon.com/512/69/69524.png" },
+  { nome: "banana", img: "https://cdn-icons-png.flaticon.com/512/590/590685.png" },
+  { nome: "livro", img: "https://cdn-icons-png.flaticon.com/512/29/29302.png" },
+  { nome: "carro", img: "https://cdn-icons-png.flaticon.com/512/743/743922.png" },
+  { nome: "flor", img: "https://cdn-icons-png.flaticon.com/512/4147/4147970.png" },
+  { nome: "sol", img: "https://cdn-icons-png.flaticon.com/512/869/869869.png" },
+  { nome: "bola", img: "https://cdn-icons-png.flaticon.com/512/861/861512.png" },
+  { nome: "lapis", img: "https://cdn-icons-png.flaticon.com/512/2721/2721297.png" }
+];
 
-// cria uma palavra
-function criarPalavra(texto, tipo) {
-  const div = document.createElement("div");
-  div.classList.add("palavra");
+// 🎮 iniciar
+function iniciarJogo(nivelEscolhido) {
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("gameUI").style.display = "block";
+  jogoRodando = true;
 
-  if (tipo === "correta") {
-    div.classList.add("correta");
+  musica.play();
+
+  if (nivelEscolhido === 1) {
+    velocidade = 4;
+    intervaloSpawn = 1500;
+  } else if (nivelEscolhido === 2) {
+    velocidade = 7;
+    intervaloSpawn = 1000;
   } else {
-    div.classList.add("errada");
+    velocidade = 10;
+    intervaloSpawn = 700;
   }
 
-  div.textContent = texto;
+  nivelEl.innerText = nivelEscolhido;
 
-  const x = Math.floor(Math.random() * 750) + 100;
-  const y = Math.floor(Math.random() * 430);
-
-  div.style.left = x + "px";
-  div.style.top = y + "px";
-
-  jogo.appendChild(div);
-
-  palavrasNaTela.push({
-    elemento: div,
-    texto: texto,
-    tipo: tipo
-  });
+  setInterval(criarPalavra, intervaloSpawn);
 }
 
-// cria palavras da fase
-function criarFase() {
-  limparPalavras();
+// 🎮 movimento
+document.addEventListener("keydown", (e) => {
+  if (!jogoRodando) return;
 
-  const dados = fases[nivel];
+  if (e.key === "ArrowLeft" && playerX > 0) playerX -= 20;
+  if (e.key === "ArrowRight" && playerX < 730) playerX += 20;
 
-  for (let i = 0; i < 3; i++) {
-    const correta = dados.corretas[Math.floor(Math.random() * dados.corretas.length)];
-    criarPalavra(correta, "correta");
-  }
-
-  for (let i = 0; i < 3; i++) {
-    const errada = dados.erradas[Math.floor(Math.random() * dados.erradas.length)];
-    criarPalavra(errada, "errada");
-  }
-}
-
-// remove palavras antigas
-function limparPalavras() {
-  for (let i = 0; i < palavrasNaTela.length; i++) {
-    palavrasNaTela[i].elemento.remove();
-  }
-
-  palavrasNaTela = [];
-}
-
-// verifica colisão
-function verificarColisao() {
-  const jogadorRect = jogador.getBoundingClientRect();
-
-  for (let i = palavrasNaTela.length - 1; i >= 0; i--) {
-    const palavraAtual = palavrasNaTela[i];
-    const palavraRect = palavraAtual.elemento.getBoundingClientRect();
-
-    if (
-      jogadorRect.left < palavraRect.right &&
-      jogadorRect.right > palavraRect.left &&
-      jogadorRect.top < palavraRect.bottom &&
-      jogadorRect.bottom > palavraRect.top
-    ) {
-      if (palavraAtual.tipo === "correta") {
-        pontos += 10;
-      } else {
-        pontos -= 5;
-        vidas--;
-      }
-
-      palavraAtual.elemento.remove();
-      palavrasNaTela.splice(i, 1);
-
-      atualizarPainel();
-      verificarFimDeJogo();
-      verificarNivel();
-
-      if (jogoAtivo && palavrasNaTela.length === 0) {
-        criarFase();
-      }
-    }
-  }
-}
-
-// verifica vitória ou derrota
-function verificarFimDeJogo() {
-  if (vidas <= 0) {
-    mensagem.textContent = "Game Over!";
-    jogoAtivo = false;
-  }
-
-  if (pontos >= 100) {
-    mensagem.textContent = "Parabéns! Você venceu!";
-    jogoAtivo = false;
-  }
-}
-
-// sobe de nível
-function verificarNivel() {
-  if (pontos >= 30 && nivel === 1) {
-    nivel = 2;
-    mensagem.textContent = "Você passou para o nível 2!";
-    atualizarPainel();
-    criarFase();
-  } else if (pontos >= 60 && nivel === 2) {
-    nivel = 3;
-    mensagem.textContent = "Você passou para o nível 3!";
-    atualizarPainel();
-    criarFase();
-  }
-}
-
-// movimento com teclado
-document.addEventListener("keydown", function(event) {
-  if (jogoAtivo === false) {
-    return;
-  }
-
-  if (event.key === "ArrowLeft") {
-    jogadorX -= velocidade;
-  } else if (event.key === "ArrowRight") {
-    jogadorX += velocidade;
-  } else if (event.key === "ArrowUp") {
-    jogadorY -= velocidade;
-  } else if (event.key === "ArrowDown") {
-    jogadorY += velocidade;
-  }
-
-  if (jogadorX < 0) {
-    jogadorX = 0;
-  }
-
-  if (jogadorX > 850) {
-    jogadorX = 850;
-  }
-
-  if (jogadorY < 0) {
-    jogadorY = 0;
-  }
-
-  if (jogadorY > 450) {
-    jogadorY = 450;
-  }
-
-  atualizarJogador();
-  verificarColisao();
+  player.style.left = playerX + "px";
 });
 
-// inicia o jogo
-atualizarJogador();
-atualizarPainel();
-criarFase();
+// 🧠 criar palavra
+function criarPalavra() {
+  const palavra = document.createElement("div");
+  palavra.classList.add("palavra");
+
+  const item = base[Math.floor(Math.random() * base.length)];
+  const erro = Math.random() > 0.5;
+
+  let imagem;
+
+  if (erro) {
+    let outro;
+    do {
+      outro = base[Math.floor(Math.random() * base.length)];
+    } while (outro.nome === item.nome);
+
+    imagem = outro.img;
+    palavra.dataset.tipo = "errada";
+  } else {
+    imagem = item.img;
+    palavra.dataset.tipo = "correta";
+  }
+
+  palavra.innerHTML = `<img src="${imagem}">${item.nome}`;
+  palavra.style.left = Math.random() * 720 + "px";
+  jogo.appendChild(palavra);
+
+  let top = 0;
+
+  const cair = setInterval(() => {
+    if (!jogoRodando) return;
+
+    top += velocidade;
+    palavra.style.top = top + "px";
+
+    if (
+      top > 300 &&
+      palavra.offsetLeft < playerX + 70 &&
+      palavra.offsetLeft + 80 > playerX
+    ) {
+      somColeta.currentTime = 0;
+      somColeta.play();
+
+      palavra.classList.add("coletado");
+
+      setTimeout(() => {
+        if (palavra.dataset.tipo === "correta") {
+          pontos += 10;
+        } else {
+          pontos -= 5;
+          vidas--;
+        }
+
+        pontosEl.innerText = pontos;
+        vidasEl.innerText = vidas;
+
+        palavra.remove();
+      }, 300);
+
+      clearInterval(cair);
+    }
+
+    if (top > 400) {
+      palavra.remove();
+      clearInterval(cair);
+    }
+
+    if (vidas <= 0) {
+      mostrarTelaFinal("😢 Game Over!");
+    }
+
+    if (pontos >= 200) {
+      mostrarTelaFinal("🎉 Parabéns! Você venceu!");
+    }
+
+  }, 50);
+}
+
+// 🏆 tela final
+function mostrarTelaFinal(texto) {
+  jogoRodando = false;
+  musica.pause();
+
+  document.getElementById("gameUI").style.display = "none";
+  document.getElementById("telaFinal").style.display = "flex";
+
+  document.getElementById("mensagemFinal").innerText = texto;
+}
+
+// 🔁 reiniciar
+function reiniciarJogo() {
+  location.reload();
+}
