@@ -409,7 +409,6 @@ function verificarColisaoComUmObstaculo(obstaculo) {
       // perde 1 vida
       vida = vida - 1;
       painelVida.textContent = vida;
-
       podePerderVida = false;
 
       // depois de 1 segundo pode perder vida de novo
@@ -442,7 +441,7 @@ function verificarVitoria() {
 
     setTimeout(function () {
       reiniciarJogo();
-    }, 2000);
+    }, 3000);
   }
 }
 
