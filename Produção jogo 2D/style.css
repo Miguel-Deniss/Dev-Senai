@@ -1,0 +1,63 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #dff6ff;
+}
+
+h1 {
+  margin-top: 20px;
+}
+
+#painel {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+#jogo {
+  width: 900px;
+  height: 500px;
+  margin: 0 auto;
+  border: 4px solid #333;
+  background-color: #fff8dc;
+  position: relative;
+  overflow: hidden;
+}
+
+#jogador {
+  width: 50px;
+  height: 50px;
+  background-color: royalblue;
+  border-radius: 10px;
+  position: absolute;
+  left: 20px;
+  top: 220px;
+}
+
+.palavra {
+  position: absolute;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 2px solid #333;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.correta {
+  background-color: lightgreen;
+}
+
+.errada {
+  background-color: lightcoral;
+}
+
+#mensagem {
+  margin-top: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: darkgreen;
+}
